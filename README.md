@@ -12,17 +12,51 @@ A practical guide for running **Need for Speed: Most Wanted (2005)** on Android:
 
 ## Phase 1 — File preparation (Ubuntu)
 
-1. **Get the game**  
-   Use the **Black Edition** from the Internet Archive: [NFS Most Wanted Black Edition (`nfs-mw-be`)](https://archive.org/details/nfs-mw-be).
+### 1. Get the right version of the game
 
-2. **Extract / install**  
-   The release uses a newer Inno Setup. On Ubuntu, run `wine NFSMW.exe` to install into a folder.
+**Source:** [NFS Most Wanted Black Edition (Portable / pre-patched)](https://archive.org/details/nfs-mw-be) on the Internet Archive (~1.9 GB for the portable build; the item page may also list a larger ISO).
 
-3. **Widescreen fix**  
-   From [ThirteenAG Widescreen Fixes Pack releases](https://github.com/ThirteenAG/WidescreenFixesPack/releases), download the **NFS: Most Wanted** fix. Copy the `scripts` folder and `dinput8.dll` into the game root (next to `speed.exe`).
+**Why this upload?** A plain ISO usually means virtual disc mounting and CD keys. This Archive build cuts most of that away: it’s already patched to **v1.3** with a **No-CD** crack applied. As **Black Edition**, it also includes extra cars (e.g. the **’67 Camaro**) and bonus races.
 
-4. **Zip for transfer**  
-   Zip the whole game folder. This avoids slow ~1 MB/s Linux→Android MTP transfers.
+### 2. Extraction roadblock (Inno Setup on Linux)
+
+**Problem:** On Ubuntu you might try `innoextract`, **7-Zip**, or similar. This uploader used a **recent Inno Setup** (e.g. **v6.3.0**). Many Linux extractors don’t understand that format and fail with errors like **“Unexpected setup data version”**.
+
+**Solution — run the installer under Wine** (same as on Windows):
+
+**A. Install Wine**
+
+```bash
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt install wine64 wine32
+```
+
+**B. Run the installer** — in the folder that contains the `.exe`:
+
+```bash
+wine NFSMW.exe
+```
+
+**C. Find the installed files** — after Wine finishes, the game lives under Wine’s fake `C:` drive. In your file manager, open **Home**, press **Ctrl+H** to show hidden files, then go to `~/.wine/drive_c/Program Files (x86)/` (or `Program Files` if the game landed there). Drag the full **Need for Speed Most Wanted** folder somewhere convenient (e.g. Desktop).
+
+### 3. Widescreen fix (essential for phone screens)
+
+**Problem:** The PC release targets **4:3**. On a tall phone (e.g. **20:9** on a Realme 9 Pro) you get bad stretching or huge letterboxing without a fix.
+
+**Solution:** Download the **ThirteenAG NFS: Most Wanted** fix from [Widescreen Fixes Pack releases](https://github.com/ThirteenAG/WidescreenFixesPack/releases).
+
+**Install:** Extract the fix and put the **`scripts`** folder and **`dinput8.dll`** in the **game root** — the same folder as **`speed.exe`**. Do **not** nest them under `CARS`, `GLOBAL`, or similar subfolders or the game won’t load the fix.
+
+### 4. MTP transfer hack (avoid sub‑1 MB/s folder copies)
+
+**Problem:** Android MTP over USB is awful with **thousands of small files** (exactly what a PC game folder is). Copying the loose folder can sit **below ~1 MB/s** for hours.
+
+**Solution:** Ship **one** archive.
+
+On Ubuntu: right‑click the final prepared game folder → **Compress…** → create a **single `.zip`**.
+
+One large file often transfers at roughly **30–40 MB/s** over USB-C. On the phone, unpack with **ZArchiver** (see Phase 2).
 
 ---
 
